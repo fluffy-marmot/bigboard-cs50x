@@ -8,4 +8,4 @@ RUN adduser -D -u 1000 sandbox
 
 USER sandbox
 
-ENTRYPOINT ["/speller/docker_entry.sh"]
+ENTRYPOINT ["sh", "/speller/docker_entry.sh"]
