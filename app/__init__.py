@@ -1,18 +1,20 @@
-import os
 import logging
-from logging.handlers import RotatingFileHandler
+import os
 import sys
+from logging.handlers import RotatingFileHandler
 
 import colorlog
 from dotenv import load_dotenv
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
+
+from flask_session import Session
 
 from .container import spin_container
+from .models import User, db
 from .queue_worker import start_queue_worker
 from .routes import main
 
-db = SQLAlchemy()
 load_dotenv()
 
 
@@ -22,9 +24,25 @@ def create_app() -> Flask:
 
     app = Flask(__name__)
 
+    login_manager = LoginManager()
+    login_manager.login_view = "main.login"
+    login_manager.init_app(app)
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
+
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+
+    # Configure session
+    app.config["SESSION_PERMANENT"] = False
+    app.config["SESSION_TYPE"] = "filesystem"
+    Session(app)
+
     db.init_app(app)
+    with app.app_context():
+        db.create_all()
 
     app.register_blueprint(main)
 
@@ -44,28 +62,28 @@ def setup_logging() -> None:
     # Colored console handler
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.DEBUG)
-    console_handler.setFormatter(colorlog.ColoredFormatter(
-        "%(log_color)s%(levelname)s %(asctime)s %(module)s %(message)s",
-        datefmt="%H:%M:%S",
-        log_colors={
-            "DEBUG": "cyan",
-            "WARN": "yellow",
-            "INFO": "green",
-            "ERROR": "red",
-            "CRIT": "red,bg_white",
-        }
-    ))
+    console_handler.setFormatter(
+        colorlog.ColoredFormatter(
+            "%(log_color)s%(levelname)s %(asctime)s %(module)s %(message)s",
+            datefmt="%H:%M:%S",
+            log_colors={
+                "DEBUG": "cyan",
+                "WARN": "yellow",
+                "INFO": "green",
+                "ERROR": "red",
+                "CRIT": "red,bg_white",
+            },
+        )
+    )
 
     # Rotating file handler
     file_handler = RotatingFileHandler(
-        "logs/app.log",
-        maxBytes=1024 * 1024 * 5,
-        backupCount=3
+        "logs/app.log", maxBytes=1024 * 1024 * 5, backupCount=3
     )
     file_handler.setLevel(logging.DEBUG)
-    file_handler.setFormatter(logging.Formatter(
-        "%(levelname)s %(asctime)s %(module)s %(message)s"
-    ))
+    file_handler.setFormatter(
+        logging.Formatter("%(levelname)s %(asctime)s %(module)s %(message)s")
+    )
 
     logging.addLevelName(logging.DEBUG, "DEBUG")
     logging.addLevelName(logging.WARNING, "WARN")
