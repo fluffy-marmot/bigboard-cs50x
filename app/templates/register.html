@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+    <div class="container py-5 text-center" id="registration_form">
+        <form action="/register" method="post">
+
+            <!-- Username field -->
+            <div class="mb-3">
+                <input class="form-control mx-auto w-auto" autocomplete="off" autofocus name="username" placeholder="Username" type="text" required>
+            </div>
+
+            <!-- Password field -->
+            <div class="mb-3">
+                <input class="form-control mx-auto w-auto" id="password" autocomplete="off" name="password" placeholder="Password" type="password" required>
+            </div>
+
+            <!-- Password confirmation field -->
+            <div class="mb-3">
+                <input class="form-control mx-auto w-auto" id="confirmation" autocomplete="off" name="confirmation" placeholder="Password Again" type="password" required>
+            </div>
+
+            <!-- Submit button -->
+            <button class="btn btn-primary" type="submit">Register</button>
+        </form>
+    </div>
+
+    <script>
+
+        document.querySelector('#registration_form').addEventListener('submit', function(event) {
+            // Get the password and confirmation the user provided
+            let password = document.querySelector('#password').value;
+            let confirmation = document.querySelector('#confirmation').value;
+
+            // Prevent the form from being submitted if the password and confirmation do not match,
+            // and alert the user about it
+            if (password !== confirmation) {
+                event.preventDefault();
+                alert('Password and confirmation must match, please try again')
+            }
+        });
+
+    </script>
+
+{% endblock %}
