@@ -1,47 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "layout.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bigboard - CS50x Speller Benchmark</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='cs50.ico') }}" type="image/x-icon">
-</head>
+{% block main %}
 
-<body>
-    <h1>Bigboard - CS50x Speller Benchmark</h1>
+    <h1>TODO</h1>
 
-    <div id="use-dist-container">
-        <label id="use-dist-label">
-            <input type="checkbox" id="use-dist-checkbox" autocomplete="off" checked>
-            Use distribution <code>dictionary.h</code>
-        </label>
-    </div>
-
-    <form id="submit-form">
-        <div id="textareas-container">
-            <div class="textarea-group">
-                <label for="code-input">Paste your <code>dictionary.c</code> below:</label>
-                <textarea id="code-input" name="code" placeholder="// your dictionary.c here..." spellcheck="false"></textarea>
-            </div>
-            <div id="textarea-divider" hidden></div>
-            <div class="textarea-group" id="header-group" hidden>
-                <label for="header-input">Paste your <code>dictionary.h</code> below:</label>
-                <textarea id="header-input" name="header" placeholder="// your dictionary.h here..." spellcheck="false"></textarea>
-            </div>
-        </div>
-        <div id="submit-container">
-            <button type="submit" id="submit-btn" disabled>Submit</button>
-            <div id="queue-status" hidden></div>
-        </div>
-    </form>
-
-    <div id="output-area">
-        <pre id="output"></pre>
-    </div>
-
-    <script src="{{ url_for('static', filename='main.js') }}"></script>
-</body>
-
-</html>
+{% endblock %}
