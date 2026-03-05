@@ -1,196 +1,173 @@
 /* prevent CSS display rules from overriding the hidden attribute */
 [hidden] { display: none !important; }
 
-@layer base {
-
-    body {
-        font-family: sans-serif;
-        color: #222;
-    }
-
-    h1 {
-        margin-bottom: 1rem;
-    }
-
-    button {
-        align-self: flex-start;
-        padding: 0.5rem 1.5rem;
-        font-size: 1rem;
-        cursor: pointer;
-    }
-
-    button:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-
-    #use-dist-container {
-        display: flex;
-        justify-content: flex-end;
-    }
-
-    #submit-form {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .submit-page-container {
-        max-width: 960px;
-        margin: 2rem auto;
-        padding: 0 1rem;
-    }
-
-    .error-header-container {
-        text-align: center;
-        padding-top: 50px;
-    }
-
-    .form-container {
-        display: grid;
-        place-items: center;
-    }
+body {
+    font-family: sans-serif;
+    color: #222;
+    margin: 8px;
 }
 
-@layer textareas {
-
-    #textareas-container {
-        display: flex;
-        height: 250px;
-        min-height: 150px;
-        resize: vertical;
-        overflow: hidden;
-    }
-
-    #textarea-divider {
-        box-sizing: border-box;
-        width: 16px;
-        padding: 0 4px;
-        flex-shrink: 0;
-        cursor: col-resize;
-        user-select: none;
-        position: relative;
-    }
-
-    #textarea-divider::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 4px;
-        right: 4px;
-        background: #e0e0e0;
-        border-radius: 4px;
-        transition: background 0.15s;
-    }
-
-    #textarea-divider:hover::before {
-        background: #bdbdbd;
-    }
-
-    .textarea-group {
-        flex: 1;
-        min-width: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-    }
-
-    textarea {
-        width: 100%;
-        flex: 1;
-        font-family: monospace;
-        font-size: 0.85rem;
-        padding: 0.5rem;
-        box-sizing: border-box;
-        resize: none;
-    }
+h1 {
+    margin-bottom: 1rem;
 }
 
-@layer output {
-
-    #submit-container {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-        padding-left: 20px;
-    }
-
-    #output-area {
-        margin-top: 1.5rem;
-    }
-
-    #output {
-        background: #1e1e1e;
-        color: #d4d4d4;
-        padding: 1rem;
-        border-radius: 4px;
-        min-height: 80px;
-        white-space: pre-wrap;
-        font-family: monospace;
-        font-size: 0.85rem;
-    }
+#use-dist-container {
+    display: flex;
+    justify-content: flex-end;
 }
 
-@layer navigation {
-    .navbar {
-        background-color: #2c2c2c;
-        display: flex;
-        align-items: baseline;
-        padding: 1rem 1.5rem;
-        margin-bottom: 2rem;
-        border-radius: 4px;
-    }
+#submit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
 
-    .nav-title {
-        color: #ffffff;
-        text-decoration: none;
-        font-size: 1.5rem;
-        font-weight: bold;
-        margin-right: 2rem;
-        transition: opacity 0.2s;
-    }
+#submit-page-container {
+    max-width: 960px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
 
-    .nav-title:hover {
-        opacity: 0.8;
-    }
+.submit-code-button {
+    align-self: flex-start;
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+}
 
-    .nav-links {
-        display: flex;
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        gap: 1.5rem;
-    }
+.submit-code-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 
-    .nav-links a {
-        color: #d4d4d4;
-        text-decoration: none;
-        font-size: 1rem;
-        position: relative;
-        padding: 4px 0;
-        transition: color 0.3s ease;
-    }
+.error-header-container {
+    text-align: center;
+    padding-top: 50px;
+}
 
-    .nav-links a::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        height: 2px;
-        background-color: #ffffff;
+#textareas-container {
+    display: flex;
+    height: 250px;
+    min-height: 150px;
+    resize: vertical;
+    overflow: hidden;
+}
 
-        transform: scaleX(0);
-        transform-origin: center;
-        transition: transform 0.3s ease;
-    }
+#textarea-divider {
+    box-sizing: border-box;
+    width: 16px;
+    padding: 0 4px;
+    flex-shrink: 0;
+    cursor: col-resize;
+    user-select: none;
+    position: relative;
+}
 
-    .nav-links a:hover {
-        color: #ffffff;
-    }
+#textarea-divider::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 4px;
+    right: 4px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    transition: background 0.15s;
+}
 
-    .nav-links a:hover::after {
-        transform: scaleX(1);
-    }
+#textarea-divider:hover::before {
+    background: #bdbdbd;
+}
+
+.textarea-group {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+textarea {
+    width: 100%;
+    flex: 1;
+    font-family: monospace;
+    font-size: 0.85rem;
+    padding: 0.5rem;
+    box-sizing: border-box;
+    resize: none;
+}
+
+#submit-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-left: 20px;
+}
+
+#output-area {
+    margin-top: 1.5rem;
+}
+
+#output {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 1rem;
+    border-radius: 4px;
+    min-height: 80px;
+    white-space: pre-wrap;
+    font-family: monospace;
+    font-size: 0.85rem;
+}
+
+.custom-navbar {
+    background-color: #2c2c2c !important;
+    padding: 0.8rem !important;
+    margin-bottom: 2rem;
+    border-radius: 8px;
+}
+
+.nav-title {
+    color: #ffffff !important;
+    font-size: 1.5rem !important;
+    font-weight: bold;
+    text-decoration: none;
+    margin-right: 1rem;
+    transition: opacity 0.2s ease;
+}
+
+.nav-title:hover {
+    opacity: 0.7;
+    color: #ffffff !important;
+}
+
+.nav-link-custom {
+    color: #d4d4d4;
+    text-decoration: none;
+    font-size: 1rem;
+    position: relative;
+    padding: 4px 0;
+    padding-top: 8px;
+    margin: 0 10px;
+    transition: color 0.3s ease;
+}
+
+.nav-link-custom::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #ffffff;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+}
+
+.nav-link-custom:hover {
+    color: #ffffff !important;
+}
+
+.nav-link-custom:hover::after {
+    transform: scaleX(1);
 }

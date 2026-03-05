@@ -1,5 +1,4 @@
 import logging
-from tabnanny import check
 
 from flask import (
     Blueprint,
@@ -9,7 +8,7 @@ from flask import (
     request,
     session,
 )
-from flask_login import current_user, login_required
+from flask_login import login_required, login_user
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from . import queue_worker
@@ -29,11 +28,10 @@ def index() -> str:
 @main.route("/login", methods=["POST", "GET"])
 def login():
     """Log user in."""
-
-    # Forget any user_id
-    session.clear()
-
     if request.method == "POST":
+        # Forget any user_id
+        session.clear()
+
         username = request.form.get("username").strip()
         password = request.form.get("password").strip()
 
@@ -52,6 +50,8 @@ def login():
                 "error.html", message="Invalid username and/or password"
             )
 
+        login_user(user)
+
         return redirect("/")
 
     else:
@@ -59,6 +59,7 @@ def login():
 
 
 @main.route("/logout")
+@login_required
 def logout():
     """Log user out."""
     session.clear()
@@ -69,7 +70,38 @@ def logout():
 def register():
     """Register user."""
     if request.method == "POST":
-        ...
+        session.clear()
+
+        username = request.form.get("username").strip()
+        password = request.form.get("password").strip()
+        confirmation = request.form.get("confirmation").strip()
+
+        if not all([username, password, confirmation]):
+            return render_template(
+                "error.html", message="Invalid username, password, and/or confirmation"
+            )
+
+        if password != confirmation:
+            return render_template(
+                "error.html", message="Password and confirmation do not match"
+            )
+
+        existing_user = User.query.filter_by(username=username).first()
+        if existing_user:
+            return render_template("error.html", message="Username already taken")
+
+        password_hash = generate_password_hash(password)
+        new_user = User(username=username, password_hash=password_hash)
+
+        try:
+            db.session.add(new_user)
+            db.session.commit()
+            login_user(new_user)
+
+            return redirect("/")
+        except Exception as _:
+            db.session.rollback()
+            return render_template("error.html", message="Database error")
 
     else:
         return render_template("register.html")
@@ -78,6 +110,7 @@ def register():
 @main.route("/submit", methods=["POST", "GET"])
 @login_required
 def submit():
+    """Let user submit code."""
     if request.method == "POST":
         data = request.get_json()
         if not data or "code" not in data:
@@ -95,6 +128,7 @@ def submit():
 
 @main.route("/status/<submission_id>")
 def status(submission_id: str):
+    """Return status of submission."""
     result = queue_worker.get_status(submission_id)
     if result is None:
         return jsonify({"error": "Unknown submission ID."}), 404
