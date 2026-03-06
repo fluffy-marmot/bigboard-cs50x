@@ -193,7 +193,7 @@ int main(int argc, char *argv[]) {
 
     // Report benchmarks
     // [OUT:signature]misspellings, n, words, l, c, s, u, total, l_min, c_min, s_min, u_min, total_min[signature]
-    printf("[OUT%s%s]%i, %i, %i, %.7f, %.7f, %.7f, %.7f, %.7f, %.7f, %.7f, %.7f, %.7f, %.7f[%s]\n",
+    printf("[OUT%s%s]%i, %i, %i, %.7f, %.7f, %.7f, %.7f, %.7f, %.7f, %.7f, %.7f, %.7f, %.7f\n",
         (*signature ? ":" : ""), signature,
         misspellings, n, words,
         time_load / iters,
@@ -205,8 +205,7 @@ int main(int argc, char *argv[]) {
         time_check_min,
         time_size_min,
         time_unload_min,
-        time_load_min + time_check_min + time_size_min + time_unload_min,
-        (*signature ? signature : "/OUT")
+        time_load_min + time_check_min + time_size_min + time_unload_min
     );
 
     // Success
