@@ -78,7 +78,7 @@ def register():
 
         if not all([username, password, confirmation]):
             return render_template(
-                "error.html", message="Invalid username, password, and/or confirmation"
+                "error.html", message="Must provide username, password, and/or confirmation"
             )
 
         if password != confirmation:
