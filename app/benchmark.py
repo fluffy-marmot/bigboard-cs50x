@@ -68,7 +68,7 @@ def _make_random_sig(length):
 
 def _execute_benchmark(item: QueueItem) -> BenchmarkResult:
     
-    SIGNATURE_LENGTH = os.getenv("SIGNATURE_LENGTH", 16)
+    SIGNATURE_LENGTH = int(os.getenv("SIGNATURE_LENGTH", 16))
     ITERATIONS = os.getenv("ITERATIONS", 1)
 
     try:
