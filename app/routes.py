@@ -21,8 +21,8 @@ main = Blueprint("main", __name__)
 
 @main.route("/")
 @login_required
-def index() -> str:
-    return render_template("index.html")
+def index():
+    return redirect("/submit")
 
 
 @main.route("/login", methods=["POST", "GET"])
