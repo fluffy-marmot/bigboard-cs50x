@@ -80,7 +80,7 @@ bool load(const char *dictionary)
 
     while (*word)
     {
-        char *tmp = rawmemchr(word, '\n');
+        char *tmp = memchr(word, '\n', LENGTH + 1);
         *tmp = '\0';
         unsigned int hash_val = hash(word);
 
