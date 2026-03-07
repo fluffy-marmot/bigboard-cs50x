@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import logging
 import subprocess
 
-from .config import  BASE_DIR, SPELLER, SPELLER_WS, ITERATIONS
+from .config import  BASE_DIR, SPELLER, SPELLER_WS, BENCHMARK_EXECUTABLE, ITERATIONS
 from .container import spin_container
 from .models import QueueItem
 
@@ -63,17 +63,20 @@ def _execute_benchmark(item: QueueItem) -> BenchmarkResult:
     try:
         # TODO this command is a placeholder, we'll clean it up later
         signature = item.submission_id
-        sh_cmds = [f"cd /{SPELLER} && "]
+        sh_cmds = [f"cd /speller"]
 
-        # switched this to using BASE_DIR - we should use this to build paths
-        textpaths = list(map(lambda filepath: filepath.name, BASE_DIR / SPELLER / "texts").iterdir())
-        log.debug(textpaths)
+        textpaths = ['texts/' + textpath.name for textpath in (BASE_DIR / SPELLER / 'texts').iterdir()]
 
+        sh_cmds += (f"./{cmd} -i {ITERATIONS} -s {signature} {textpath}" for textpath in textpaths for cmd in ["speller", BENCHMARK_EXECUTABLE])
+
+        import time
+        start_time = time.time()
         result = spin_container(parameters=["-c",
-            f"cd /{SPELLER} && "
-            f"./speller -i 5 texts/holmes.txt && echo 'Benchmark:' && ./benchmark -i 5 texts/holmes.txt"])
-        output = result.stdout + result.stderr
+            " && ".join(sh_cmds)
+        ])
 
+        total_time = time.time() - start_time
+        output = result.stdout + result.stderr + f"\nContainer finished task in {total_time} s."
 
         # TODO return different statuses
         status = "done"

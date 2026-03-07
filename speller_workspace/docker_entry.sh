@@ -2,29 +2,17 @@
 
 set -e
 
-# dir names
-# SPELLER=speller
-# SPELLER_WS=speller_workspace
-
-SPELLER_C_FILENAME=speller3.c
-DICTIONARY_H_FILENAME=distribution_dictionary.h
-
-# benchmark filenames: dictionary.c source and executable to use
-DICTIONARY_C_BENCHMARK_FILENAME=benchmark_dictionary.c
-BENCHMARK_EXECUTABLE=benchmark
-
-
 if [ "$1" = "--initialize" ]; then
     # symbolic links to ephemeral student submission files in /speller_workspace
-    ln -sf "/$SPELLER_WS/_dictionary.c" "/$SPELLER/dictionary.c"
-    ln -sf "/$SPELLER_WS/_dictionary.h" "/$SPELLER/dictionary.h"
+    ln -sf -T "/$SPELLER_WS/_dictionary.c" "/$SPELLER/dictionary.c"
+    ln -sf -T "/$SPELLER_WS/_dictionary.h" "/$SPELLER/dictionary.h"
     
     # symbolic link to version of speller.c we will be using
-    ln -sf "/$SPELLER_WS/$SPELLER_C_FILENAME" "/$SPELLER/speller.c"
+    ln -sf -T "/$SPELLER_WS/$SPELLER_C_FILENAME" "/$SPELLER/speller.c"
 
     # compile benchmark version of dictionary.c -- we only need to do this once at initialization
-    ln -sf "/$SPELLER_WS/$DICTIONARY_H_FILENAME" "/$SPELLER_WS/_dictionary.h"
-    ln -sf "/$SPELLER_WS/$DICTIONARY_C_BENCHMARK_FILENAME" "/$SPELLER/$DICTIONARY_C_BENCHMARK_FILENAME"
+    ln -sf -T "/$SPELLER_WS/$DICTIONARY_H_FILENAME" "/$SPELLER_WS/_dictionary.h"
+    ln -sf -T "/$SPELLER_WS/$DICTIONARY_C_BENCHMARK_FILENAME" "/$SPELLER/$DICTIONARY_C_BENCHMARK_FILENAME"
 
     cd "/$SPELLER"
 
