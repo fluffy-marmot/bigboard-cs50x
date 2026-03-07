@@ -59,7 +59,7 @@ def _compile_submission(item: QueueItem) -> BenchmarkResult:
 
 
 def _execute_benchmark(item: QueueItem) -> BenchmarkResult:
-    
+
     ITERATIONS = os.getenv("ITERATIONS", 1)
 
     try:
@@ -75,7 +75,7 @@ def _execute_benchmark(item: QueueItem) -> BenchmarkResult:
             f"./speller -i 5 texts/holmes.txt && echo 'Benchmark:' && ./benchmark -i 5 texts/holmes.txt"])
         output = result.stdout + result.stderr
 
-    
+
         # TODO return different statuses
         status = "done"
 
@@ -84,5 +84,5 @@ def _execute_benchmark(item: QueueItem) -> BenchmarkResult:
     except subprocess.TimeoutExpired:
         log.warning("Submission %s execution timed out", item.submission_id)
         return BenchmarkResult(status="error", output="Error: execution timed out")
-    
+
         # TODO may need to implement a docker stop command here in case of timeouts? Can process keep running?
