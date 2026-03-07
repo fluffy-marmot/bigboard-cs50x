@@ -1,5 +1,4 @@
 import logging
-import os
 import sys
 from logging.handlers import RotatingFileHandler
 
@@ -9,7 +8,7 @@ from flask_login import LoginManager
 
 from flask_session import Session
 
-from .config import *
+from .config import SECRET_KEY, DATABASE_URL, MAX_CONTENT_LENGTH
 from .container import spin_container
 from .models import User, db
 from .queue_worker import start_queue_worker
@@ -22,9 +21,9 @@ def create_app() -> Flask:
 
     app = Flask(__name__)
 
-    app.config["SECRET_KEY"] = os.environ["SECRET_KEY"]
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URL"]
-    app.config["MAX_CONTENT_LENGTH"] = int(os.getenv("MAX_CONTENT_LENGTH", "32768"))
+    app.config["SECRET_KEY"] = SECRET_KEY
+    app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
+    app.config["MAX_CONTENT_LENGTH"] = MAX_CONTENT_LENGTH
 
     login_manager = LoginManager()
     login_manager.login_view = "main.login"

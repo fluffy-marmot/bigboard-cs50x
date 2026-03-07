@@ -6,7 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 
-# not for database, just needed across different fiels
+# not for database, just needed across different modules
 @dataclass
 class QueueItem:
     submission_id: str  # unique id used by client to check status of their submission

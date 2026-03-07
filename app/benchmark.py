@@ -1,9 +1,8 @@
 from dataclasses import dataclass
 import logging
 import subprocess
-import os
 
-from .config import *
+from .config import  BASE_DIR, SPELLER, SPELLER_WS, ITERATIONS
 from .container import spin_container
 from .models import QueueItem
 
@@ -59,15 +58,15 @@ def _compile_submission(item: QueueItem) -> BenchmarkResult:
 
 
 def _execute_benchmark(item: QueueItem) -> BenchmarkResult:
-
-    ITERATIONS = os.getenv("ITERATIONS", 1)
+    # ITERATIONS imported up top from config module now
 
     try:
         # TODO this command is a placeholder, we'll clean it up later
         signature = item.submission_id
         sh_cmds = [f"cd /{SPELLER} && "]
 
-        textpaths = list(map(lambda filepath: filepath.name, Path('./speller/texts').iterdir()))
+        # switched this to using BASE_DIR - we should use this to build paths
+        textpaths = list(map(lambda filepath: filepath.name, BASE_DIR / SPELLER / "texts").iterdir())
         log.debug(textpaths)
 
         result = spin_container(parameters=["-c",
